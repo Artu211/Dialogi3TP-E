@@ -1,13 +1,16 @@
 package com.example.dialogi3tp_e;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         przycisk1.setOnClickListener(v -> showAlertDialog());
         przycisk2.setOnClickListener(v -> showListDialog());
         przycisk3.setOnClickListener(v -> showDatePickerDialog());
+        przycisk4.setOnClickListener(v -> showTimePickerDialog());
+        przycisk5.setOnClickListener(v -> showCustomDialog());
     }
     private void showAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -91,4 +96,35 @@ public class MainActivity extends AppCompatActivity {
 
         datePickerDialog.show();
     }
+
+    private void showTimePickerDialog(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Toast.makeText(MainActivity.this, "Wybrana godzina: " + hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
+            }
+        }, hour, minute, true);
+
+        timePickerDialog.show();
+    }
+
+    private void showCustomDialog(){
+        final android.app.Dialog dialog = new android.app.Dialog(this);
+        dialog.setContentView(R.layout.custom);
+
+        Button btnSubmit = dialog.findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Toast.makeText(MainActivity.this, "Wysłano!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 }
